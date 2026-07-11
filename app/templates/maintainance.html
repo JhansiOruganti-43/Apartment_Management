@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% block title %}Maintenance Bills{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <a href="{{ url_for('main.dashboard') }}" class="btn btn-secondary">← Go to Dashboard</a>
+    <h2>Maintenance Bills - {{ current_month }}</h2>
+    <!-- <a class="btn btn-warning" href="{{ url_for('main.download_report', month=current_month) }}">Download Report</a> -->
+  </div>
+
+  <!-- Filter by Month -->
+  <form method="GET" action="{{ url_for('main.maintenance_bills') }}" class="mb-4">
+    <label for="filter-month" class="form-label">Filter by Month:</label>
+    <input type="month" id="filter-month" name="month" value="{{ current_month }}" class="form-control d-inline-block" style="width: auto;">
+    <button type="submit" class="btn btn-primary ms-2">Filter</button>
+  </form>
+
+  <!-- Bills Table -->
+  <table class="table table-bordered table-hover shadow-sm">
+    <thead class="table-success">
+      <tr>
+        <th>Bill ID</th>
+        <th>Flat</th>
+        <th>Month</th>
+        <th>Base Amount</th>
+        <th>Status</th>
+        <th>Actions</th>
+        <th>Method</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for bill in bills %}
+      <tr data-id="{{ bill.bill_id }}">
+        <td>{{ bill.bill_id }}</td>
+        <td>{{ bill.flat.flat_number }}</td>
+        <td>{{ bill.month }}</td>
+        <td class="amount">{{ "%.2f"|format(bill.base_amount) }}</td>
+        <td class="status {{ bill.status|lower }}">{{ bill.status }}</td>
+        <td>
+          <button class="btn btn-sm btn-primary me-1" onclick="editRow(this)">Edit</button>
+          {% if bill.status != 'Paid' %}
+          <button class="btn btn-sm btn-success mark-paid-btn" onclick="markPaid(this)">Mark Paid</button>
+          {% endif %}
+        </td>
+        <td>{{ bill.method }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+</div>
+
+<script>
+  function editRow(btn) {
+    const row = btn.closest("tr");
+    const billId = row.dataset.id;
+    const amountCell = row.querySelector(".amount");
+    const statusCell = row.querySelector(".status");
+
+    const currentAmount = parseFloat(amountCell.textContent);
+    const currentStatus = statusCell.textContent.trim();
+
+    const newAmount = prompt("Enter new base amount:", currentAmount);
+    if (newAmount === null || isNaN(newAmount)) return alert("Invalid base amount");
+
+    const newStatus = prompt("Enter new status (Paid or Pending):", currentStatus);
+    if (newStatus !== "Paid" && newStatus !== "Pending") return alert("Invalid status");
+
+    const method = prompt("Enter payment method (Online or Cash):", row.querySelector("td:nth-child(7)").textContent.trim());
+    if (method !== "Online" && method !== "Cash") return alert("Invalid payment method");
+
+    fetch(`/edit_bill_amount/${billId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      body: JSON.stringify({
+        base_amount: parseFloat(newAmount),
+        status: newStatus,
+        method: method
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.message) {
+        amountCell.textContent = parseFloat(newAmount).toFixed(2);
+        statusCell.textContent = newStatus;
+        statusCell.className = `status ${newStatus.toLowerCase()}`;
+
+        if (newStatus === "Paid") {
+          const markBtn = row.querySelector(".mark-paid-btn");
+          if (markBtn) markBtn.remove();
+        }
+      } else {
+        alert("Update failed: " + data.error);
+      }
+    });
+  }
+
+  function markPaid(btn) {
+    const row = btn.closest("tr");
+    const billId = row.dataset.id;
+
+    fetch(`/update_bill_status/${billId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      body: JSON.stringify({ status: "Paid" })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.message) {
+        const statusCell = row.querySelector(".status");
+        statusCell.textContent = "Paid";
+        statusCell.className = "status paid";
+        btn.remove();
+      } else {
+        alert("Mark Paid failed: " + data.error);
+      }
+    });
+  }
+</script>
+{% endblock %}
