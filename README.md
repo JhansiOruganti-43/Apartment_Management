@@ -1,48 +1,103 @@
-                                                        Apartment Maintenance Management System — README
- Project Overview:
-   A Python Flask web application to automate financial operations for a 40-flat apartment complex. It supports monthly billing, payments, expense logging, financial reporting (balance sheet, cash flow), and
-   defaulter tracking. Designed for treasurer workflows with month-end closing and reports.
-   
- Features:
-   • Configure and generate monthly maintenance bills for 40 flats
-   • Record payments (Cash / Online)
-   • Real-time balance updates 
-   • Daily expense logging with vendor, category, date
-   • Categorize expenses (electricity, repairs, taxes, security, plumbing, etc.)
-   • Monthly financial reports: Balance Sheet, Cash Flow
-   • Month-end closing with automatic report generation
-   
- Tech Stack
-   • Backend: Flask (Python)
-   • Database: MySQL
-   • Frontend: HTML, CSS, JavaScript
-   • UI Framework: Bootstrap 5
-   
- Database Schema:
-   Tables: flats, maintenance_bills, payments, expenses, financial_reports. Supports foreign key relationships for bills, payments, and reports.
-   
- Month-End Closing:
-   Locks previous month's data, computes closing balance using: Closing Balance = Opening Balance + Total Maintenance Collected - Total Expenses. 
-   Generates Balance Sheet and Cash Flow Statement automatically.
-   
- Setup Instructions:
-  1 Clone the repository into your system:
-    git clone [<repo-url>](https://github.com/Swapnalatha-123/apartment-management-system)
-    
- 2 Install required dependencies using pip:
-    python -m venv .venv
-    source .venv/bin/activate    # on Windows: .venv\Scripts\activate
-    pip install -r requirements.txt
+# 🏢 Apartment Management System
 
- 3 Configure MySQL database and update DB URI in config:
-   flask db upgrade
- 
- 4 Run migrations and seed data (optional)
- 5 Start the Flask development server and access via browser:
-   flask run (or) python run.py
-   
- Usage:
- 1. Generate monthly bills.
- 2. Record payments as they come in.
- 3. Log expenses daily
- 4. At month end, perform closing and generate reports. 
+A comprehensive web-based Apartment Management System designed to simplify and automate apartment administration through a centralized online platform. The system enables apartment administrators to efficiently manage maintenance billing, resident records, payments, expenses, and financial reports while reducing manual effort and improving operational transparency.
+
+---
+
+## ✨ Key Features
+
+- 🏠 Manage apartment residents and flat information
+- 💳 Generate monthly maintenance bills
+- 💰 Record and track maintenance payments
+- 🧾 Generate payment receipts after successful transactions
+- 📊 Maintain and monitor apartment expenses
+- 📈 Generate monthly financial reports
+- ⚠️ Track pending dues and payment status
+- 🔐 Secure administrator authentication
+- 🌐 Fully online apartment management platform
+
+---
+
+## 🛠️ Tech Stack
+
+| Category | Technology |
+|----------|------------|
+| **Backend** | Flask, Python |
+| **Database** | MySQL, SQLAlchemy |
+| **Frontend** | HTML, CSS, JavaScript |
+| **UI Framework** | Bootstrap 5 |
+| **Database Migration** | Flask-Migrate |
+| **Scheduling** | APScheduler |
+
+---
+
+## 📂 Project Structure
+
+```
+Apartment_Management
+│
+├── app/
+├── migrations/
+├── create_admin.py
+├── requirements.txt
+├── run.py
+└── README.md
+```
+
+---
+
+## 🚀 Core Modules
+
+- Resident Management
+- Flat Management
+- Maintenance Billing
+- Payment Management
+- Expense Tracking
+- Financial Reporting
+- Pending Dues Monitoring
+- Administrator Dashboard
+
+---
+
+## 🎯 Project Objective
+
+The Apartment Management System is developed to digitize apartment administration by providing an efficient online platform for managing maintenance operations, financial records, billing, and expenses. The application minimizes manual paperwork, improves transparency, and streamlines apartment management through a centralized web interface.
+
+---
+
+## ⚙️ Installation
+
+```bash
+git clone https://github.com/JhansiOruganti-43/Apartment_Management.git
+
+cd Apartment_Management
+
+python -m venv venv
+
+# Windows
+venv\Scripts\activate
+
+pip install -r requirements.txt
+
+python run.py
+```
+
+---
+
+## 📌 Future Enhancements
+
+- Email Notifications
+- SMS Alerts
+- Online Payment Gateway
+- Resident Complaint Management
+- Role-Based Access Control
+- Dashboard Analytics
+- Cloud Deployment
+
+---
+
+## 👩‍💻 Author
+
+**Jhansi Oruganti**
+
+GitHub: https://github.com/JhansiOruganti-43
