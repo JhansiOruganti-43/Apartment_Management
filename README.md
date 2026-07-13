@@ -61,7 +61,7 @@ Apartment_Management
 
 ## 🎯 Project Objective
 
-The Apartment Management System is developed to digitize apartment administration by providing an efficient online platform for managing maintenance operations, financial records, billing, and expenses. The application minimizes manual paperwork, improves transparency, and streamlines apartment management through a centralized web interface.
+The Apartment Management system is developed to digitize apartment administration by providing an efficient online platform for managing maintenance operations, financial records, billing, and expenses. The application minimizes manual paperwork, improves transparency, and streamlines apartment management through a centralized web interface.
 
 ---
 
